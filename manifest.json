@@ -1,16 +1,16 @@
 {
-  "id": "dev.replugged.PluginTemplate",
-  "name": "Plugin Template",
-  "description": "A plugin template",
+  "id": "dev.tharki.DefaultServerSettings",
+  "name": "DefaultServerSettings",
+  "description": "Apply your custom set settings to server on joining.",
   "author": {
-    "name": "replugged",
-    "discordID": "1000992611840049192",
-    "github": "replugged-org"
+    "name": "Ahlawat",
+    "discordID": "1025214794766221384",
+    "github": "Tharki-God"
   },
   "version": "1.0.0",
   "updater": {
     "type": "github",
-    "id": "replugged-org/plugin-template"
+    "id": "Tharki-God/DefaultServerSettings"
   },
   "license": "MIT",
   "type": "replugged-plugin",
