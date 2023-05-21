@@ -13,7 +13,7 @@ export const registerSettings = (): void => {
     SettingValues.set(key as keyof Types.Settings, defaultSettings[key]);
   }
 };
-export const applyServerSettingsToAll = (): void => {
+export const applyServerSettingsToAll = async (): Promise<void> => {
   const Guilds = UltimateGuildsStore.getGuilds();
   for (const GuildID in Guilds) {
     GuildNotificationUtils.updateGuildNotificationSettings(GuildID, {
@@ -37,11 +37,12 @@ export const applyServerSettingsToAll = (): void => {
         defaultSettings.hideMutedChannels,
       ),
     });
+    await util.sleep(1000);
   }
   PluginLogger.log("Default Settings Applied to all guilds");
   ModalUtils.alert({
     title: "DefaultServerSettings",
-    body: "Default Settings have been applied to all servers.",
+    body: "Thanks for waiting, Default Settings have been applied to all servers.",
     confirmText: "OK",
   });
 };
@@ -155,7 +156,15 @@ export const Settings = (): Types.ReactElement => {
           {...{
             button: "Apply to all servers",
             onClick: () => {
-              applyServerSettingsToAll();
+              ModalUtils.alert({
+                title: "Are you sure you want to continue?",
+                body: `This will apply these settings to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
+                  Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
+                )}.`,
+                confirmText: "Yes",
+                cancelText: "No",
+                onConfirm: applyServerSettingsToAll,
+              });
             },
           }}>
           Pressing this button will apply the above set settings to all existing servers your have
@@ -189,7 +198,9 @@ export const Settings = (): Types.ReactElement => {
                 body: `This will apply this nickname to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
                   Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
                 )}.`,
-                confirmText: "OK",
+                confirmText: "Yes",
+                cancelText: "No",
+                onConfirm: applyNicknameToAll,
               });
             },
           }}>
