@@ -5,9 +5,7 @@ export const GuildNotificationUtils = webpack.getByProps<Types.GuildNotification
   "updateGuildNotificationSettings",
 ]);
 
-export const NicknameUtils = webpack.getByProps<Types.NicknameUtis>([
-  "changeNickname",
-]);
+export const NicknameUtils = webpack.getByProps<Types.NicknameUtis>(["changeNickname"]);
 
 export const VerificationUtils = webpack.getByProps<Types.VerificationUtils>([
   "submitVerificationForm",
