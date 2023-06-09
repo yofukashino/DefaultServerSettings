@@ -217,7 +217,7 @@ export const Settings = (): Types.ReactElement => {
           {...{
             ...util.useSetting(SettingValues, "terms", defaultSettings.terms),
           }}>
-          Accept server terms
+          Accept server terms (Might not work as intended).
         </SwitchItem>
       </Category>
     </div>

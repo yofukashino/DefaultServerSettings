@@ -1,14 +1,14 @@
 import { webpack } from "replugged";
 import * as Types from "../types";
 
-export const GuildNotificationUtils = webpack.getByProps([
+export const GuildNotificationUtils = webpack.getByProps<Types.GuildNotificationUtils>([
   "updateGuildNotificationSettings",
-]) as unknown as Types.GuildNotificationUtils;
+]);
 
-export const NicknameUtils = webpack.getByProps([
+export const NicknameUtils = webpack.getByProps<Types.NicknameUtis>([
   "changeNickname",
-]) as unknown as Types.NicknameUtis;
+]);
 
-export const VerificationUtils = webpack.getByProps([
+export const VerificationUtils = webpack.getByProps<Types.VerificationUtils>([
   "submitVerificationForm",
-]) as unknown as Types.VerificationUtils;
+]);
