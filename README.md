@@ -10,7 +10,7 @@ Install Link:
 
 [![Install in Replugged](https://img.shields.io/badge/-Install%20in%20Replugged-blue?style=for-the-badge&logo=none)](https://replugged.dev/install?identifier=dev.tharki.DefaultServerSettings)
 
-![image](https://tharki-god.github.io/files-random-host/bdpluginsassets/dss.png)
+![dss](https://i.imgur.com/pr5xu7W.png)
 
 > For issues related to plugin either DM the dev or ask in support server listed below.
 >
