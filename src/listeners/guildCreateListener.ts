@@ -1,7 +1,7 @@
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import { GuildNotificationUtils, NicknameUtils } from "../lib/requiredModules";
-import * as Types from "../types";
+import Types from "../types";
 export const guildCreateListener = (info): void => {
   const { guild } = info as Types.GuildCreateInfo;
   GuildNotificationUtils.updateGuildNotificationSettings(guild.id, {

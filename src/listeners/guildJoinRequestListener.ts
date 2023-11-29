@@ -1,7 +1,7 @@
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import { VerificationUtils } from "../lib/requiredModules";
-import * as Types from "../types";
+import Types from "../types";
 export const guildJoinRequestListener = (info): void => {
   const { guildId } = info as Types.GuildJoinRequestInfo;
   if (SettingValues.get("terms", defaultSettings.terms))

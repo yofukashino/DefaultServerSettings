@@ -1,6 +1,5 @@
 import { types as DefaultTypes } from "replugged";
 export { types as DefaultTypes } from "replugged";
-export { ReactElement } from "react";
 
 export interface GuildNotificationUtils {
   close: DefaultTypes.AnyFunction;
@@ -55,3 +54,5 @@ export interface Settings {
   nickname: string;
   terms: boolean;
 }
+
+export * as default from "./types";

@@ -1,11 +1,22 @@
-import { common, components, util } from "replugged";
+import { util } from "replugged";
+import {
+  modal as ModalUtils,
+  guilds as UltimateGuildsStore,
+  users as UltimateUserStore,
+} from "replugged/common";
+import {
+  ButtonItem,
+  Category,
+  FormItem,
+  SelectItem,
+  SwitchItem,
+  TextInput,
+} from "replugged/components";
 import { PluginLogger, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
 import { GuildNotificationUtils, NicknameUtils } from "../lib/requiredModules";
-import * as Utils from "../lib/utils";
-const { users: UltimateUserStore, guilds: UltimateGuildsStore, modal: ModalUtils } = common;
-const { SelectItem, SwitchItem, Category, TextInput, FormItem, ButtonItem } = components;
-import * as Types from "../types";
+import Utils from "../lib/utils";
+import Types from "../types";
 export const registerSettings = (): void => {
   for (const key in defaultSettings) {
     if (SettingValues.has(key as keyof Types.Settings)) return;
@@ -64,7 +75,7 @@ export const applyNicknameToAll = async (): Promise<void> => {
     confirmText: "OK",
   });
 };
-export const Settings = (): Types.ReactElement => {
+export const Settings = (): React.ReactElement => {
   return (
     <div>
       <Category

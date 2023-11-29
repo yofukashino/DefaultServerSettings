@@ -6,15 +6,14 @@ export const SettingValues = await settings.init(
   "dev.tharki.DefaultServerSettings",
   defaultSettings,
 );
-
-import { addListeners, removeListeners } from "./listeners/index";
+import Listeners from "./listeners";
 
 export const start = (): void => {
   registerSettings();
-  addListeners();
+  Listeners.addListeners();
 };
 
 export const stop = (): void => {
-  removeListeners();
+  Listeners.removeListeners();
 };
 export { Settings } from "./Components/Settings.jsx";

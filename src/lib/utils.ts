@@ -13,3 +13,5 @@ export const toDaysMinutesSeconds = (totalSeconds: number): string => {
   const daysStr = makeHumanReadable(days, "day");
   return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`.replace(/,\s*$/, "");
 };
+
+export default { makeHumanReadable, toDaysMinutesSeconds };
