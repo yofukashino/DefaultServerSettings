@@ -1,6 +1,6 @@
 {
   "name": "default-server-settings",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Apply your custom set settings to server on joining.",
   "engines": {
     "node": ">=14.0.0"
