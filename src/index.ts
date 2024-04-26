@@ -1,16 +1,17 @@
 import { Logger, settings } from "replugged";
 import { defaultSettings } from "./lib/consts";
-import { registerSettings } from "./Components/Settings";
+
 export const PluginLogger = Logger.plugin("DefaultServerSettings");
 export const SettingValues = await settings.init(
   "dev.tharki.DefaultServerSettings",
   defaultSettings,
 );
+import Settings from "./Components/Settings";
 import Listeners from "./listeners";
 
 export const start = (): void => {
-  registerSettings();
-  Listeners.addListeners();
+  Settings.registerSettings();
+  void Listeners.addListeners();
 };
 
 export const stop = (): void => {
