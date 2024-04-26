@@ -1,12 +1,18 @@
 import { webpack } from "replugged";
 import Types from "../types";
 
-export const GuildNotificationUtils = webpack.getByProps<Types.GuildNotificationUtils>([
-  "updateGuildNotificationSettings",
-]);
+export const Modules: Types.Modules = {};
 
-export const NicknameUtils = webpack.getByProps<Types.NicknameUtis>(["changeNickname"]);
+Modules.loadModules = async (): Promise<void> => {
+  Modules.GuildNotificationUtils ??= await webpack.waitForProps<Types.GuildNotificationUtils>(
+    "updateGuildNotificationSettings",
+  );
 
-export const VerificationUtils = webpack.getByProps<Types.VerificationUtils>([
-  "submitVerificationForm",
-]);
+  Modules.NicknameUtils ??= await webpack.waitForProps<Types.NicknameUtis>("changeNickname");
+
+  Modules.VerificationUtils ??= await webpack.waitForProps<Types.VerificationUtils>(
+    "submitVerificationForm",
+  );
+};
+
+export default Modules;

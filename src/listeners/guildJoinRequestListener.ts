@@ -1,9 +1,9 @@
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
-import { VerificationUtils } from "../lib/requiredModules";
+import Modules from "../lib/requiredModules";
 import Types from "../types";
-export const guildJoinRequestListener = (info): void => {
+export default (info): void => {
   const { guildId } = info as Types.GuildJoinRequestInfo;
   if (SettingValues.get("terms", defaultSettings.terms))
-    VerificationUtils.submitVerificationForm(guildId, "@me");
+    Modules.VerificationUtils.submitVerificationForm(guildId, "@me");
 };

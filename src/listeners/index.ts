@@ -1,13 +1,13 @@
 import { fluxDispatcher as FluxDispatcher } from "replugged/common";
-import { guildCreateListener } from "./guildCreateListener";
-import { guildJoinRequestListener } from "./guildJoinRequestListener";
+import GuildCreateListener from "./GuildCreateListener";
+import GuildJoinRequestListener from "./GuildJoinRequestListener";
 export const addListeners = (): void => {
-  FluxDispatcher.subscribe("GUILD_CREATE", guildCreateListener);
-  FluxDispatcher.subscribe("GUILD_JOIN_REQUEST_CREATE", guildJoinRequestListener);
+  FluxDispatcher.subscribe("GUILD_CREATE", GuildCreateListener);
+  FluxDispatcher.subscribe("GUILD_JOIN_REQUEST_CREATE", GuildJoinRequestListener);
 };
 export const removeListeners = (): void => {
-  FluxDispatcher.unsubscribe("GUILD_CREATE", guildCreateListener);
-  FluxDispatcher.unsubscribe("GUILD_JOIN_REQUEST_CREATE", guildJoinRequestListener);
+  FluxDispatcher.unsubscribe("GUILD_CREATE", GuildCreateListener);
+  FluxDispatcher.unsubscribe("GUILD_JOIN_REQUEST_CREATE", GuildJoinRequestListener);
 };
 
 export default { addListeners, removeListeners };

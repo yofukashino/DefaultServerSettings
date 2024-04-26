@@ -4,7 +4,7 @@ Apply your custom set settings to server on joining.
 
 You can also set a default nickname for servers.
 
-Direct Download Link: [dev.tharki.DefaultServerSettings.asar](https://github.com/TharkiDev/DefaultServerSettings/releases/latest/download/dev.tharki.DefaultServerSettings.asar)
+Direct Download Link: [dev.tharki.DefaultServerSettings.asar](https://github.com/YofukashiNo/DefaultServerSettings/releases/latest/download/dev.tharki.DefaultServerSettings.asar)
 
 Install Link:
 

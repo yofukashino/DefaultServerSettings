@@ -1,9 +1,9 @@
 import { SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
-import { GuildNotificationUtils, NicknameUtils } from "../lib/requiredModules";
+import Modules from "../lib/requiredModules";
 import Types from "../types";
-export const guildCreateListener = (info): void => {
-  const { guild } = info as Types.GuildCreateInfo;
+export default ({ guild }: Types.GuildCreateInfo): void => {
+  const { GuildNotificationUtils, NicknameUtils } = Modules;
   GuildNotificationUtils.updateGuildNotificationSettings(guild.id, {
     muted: SettingValues.get("muted", defaultSettings.muted),
     message_notifications: Number(

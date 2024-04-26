@@ -14,9 +14,10 @@ import {
 } from "replugged/components";
 import { PluginLogger, SettingValues } from "../index";
 import { defaultSettings } from "../lib/consts";
-import { GuildNotificationUtils, NicknameUtils } from "../lib/requiredModules";
+import Modules from "../lib/requiredModules";
 import Utils from "../lib/utils";
 import Types from "../types";
+
 export const registerSettings = (): void => {
   for (const key in defaultSettings) {
     if (SettingValues.has(key as keyof Types.Settings)) return;
@@ -24,10 +25,11 @@ export const registerSettings = (): void => {
     SettingValues.set(key as keyof Types.Settings, defaultSettings[key]);
   }
 };
+
 export const applyServerSettingsToAll = async (): Promise<void> => {
   const Guilds = UltimateGuildsStore.getGuilds();
   for (const GuildID in Guilds) {
-    GuildNotificationUtils.updateGuildNotificationSettings(GuildID, {
+    Modules.GuildNotificationUtils.updateGuildNotificationSettings(GuildID, {
       muted: SettingValues.get("muted", defaultSettings.muted),
       message_notifications: Number(
         SettingValues.get("messageNotifications", defaultSettings.messageNotifications),
@@ -57,10 +59,11 @@ export const applyServerSettingsToAll = async (): Promise<void> => {
     confirmText: "OK",
   });
 };
+
 export const applyNicknameToAll = async (): Promise<void> => {
   const Guilds = UltimateGuildsStore.getGuilds();
   for (const GuildID in Guilds) {
-    NicknameUtils.changeNickname(
+    Modules.NicknameUtils.changeNickname(
       GuildID,
       null,
       "@me",
@@ -75,162 +78,121 @@ export const applyNicknameToAll = async (): Promise<void> => {
     confirmText: "OK",
   });
 };
+
 export const Settings = (): React.ReactElement => {
   return (
     <div>
-      <Category
-        {...{
-          title: "Server Settings",
-          open: false,
-        }}>
-        <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "muted", defaultSettings.muted),
-          }}>
+      <Category title="Server Settings" open={false}>
+        <SwitchItem {...util.useSetting(SettingValues, "muted", defaultSettings.muted)}>
           Mute Server
         </SwitchItem>
         <SelectItem
-          {...{
-            options: [
-              {
-                label: "All Messages",
-                value: "0",
-              },
-              {
-                label: "Only mentions",
-                value: "1",
-              },
-              {
-                label: "Nothing",
-                value: "2",
-              },
-            ],
-            ...util.useSetting(
-              SettingValues,
-              "messageNotifications",
-              defaultSettings.messageNotifications,
-            ),
-          }}>
+          options={[
+            {
+              label: "All Messages",
+              value: "0",
+            },
+            {
+              label: "Only mentions",
+              value: "1",
+            },
+            {
+              label: "Nothing",
+              value: "2",
+            },
+          ]}
+          {...util.useSetting(
+            SettingValues,
+            "messageNotifications",
+            defaultSettings.messageNotifications,
+          )}>
           Message Notifications
         </SelectItem>
         <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "notifyHighlights", defaultSettings.notifyHighlights),
-          }}>
+          {...util.useSetting(SettingValues, "notifyHighlights", defaultSettings.notifyHighlights)}>
           Highlight Notifications
         </SwitchItem>
         <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "supressEveryone", defaultSettings.supressEveryone),
-          }}>
+          {...util.useSetting(SettingValues, "supressEveryone", defaultSettings.supressEveryone)}>
           Suppress @everyone and @here
         </SwitchItem>
         <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "supressRoles", defaultSettings.supressRoles),
-          }}>
+          {...util.useSetting(SettingValues, "supressRoles", defaultSettings.supressRoles)}>
           Suppress @role mentions
         </SwitchItem>
-        <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "mobilePush", defaultSettings.mobilePush),
-          }}>
+        <SwitchItem {...util.useSetting(SettingValues, "mobilePush", defaultSettings.mobilePush)}>
           Mobile Push Notifications
         </SwitchItem>
         <SwitchItem
-          {...{
-            ...util.useSetting(
-              SettingValues,
-              "muteScheduledEvents",
-              defaultSettings.muteScheduledEvents,
-            ),
-          }}>
+          {...util.useSetting(
+            SettingValues,
+            "muteScheduledEvents",
+            defaultSettings.muteScheduledEvents,
+          )}>
           Mute New Events
         </SwitchItem>
-        <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "flags", defaultSettings.flags),
-          }}>
+        <SwitchItem {...util.useSetting(SettingValues, "flags", defaultSettings.flags)}>
           Show All Channels
         </SwitchItem>
         <SwitchItem
-          {...{
-            ...util.useSetting(
-              SettingValues,
-              "hideMutedChannels",
-              defaultSettings.hideMutedChannels,
-            ),
-          }}>
+          {...util.useSetting(
+            SettingValues,
+            "hideMutedChannels",
+            defaultSettings.hideMutedChannels,
+          )}>
           Hide Muted Channels
         </SwitchItem>
         <ButtonItem
-          {...{
-            button: "Apply to all servers",
-            onClick: () => {
-              ModalUtils.alert({
-                title: "Are you sure you want to continue?",
-                body: `This will apply these settings to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
-                  Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
-                )}.`,
-                confirmText: "Yes",
-                cancelText: "No",
-                onConfirm: applyServerSettingsToAll,
-              });
-            },
+          button="Apply to all servers"
+          onClick={() => {
+            ModalUtils.alert({
+              title: "Are you sure you want to continue?",
+              body: `This will apply these settings to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
+                Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
+              )}.`,
+              confirmText: "Yes",
+              cancelText: "No",
+              onConfirm: applyServerSettingsToAll,
+            });
           }}>
           Pressing this button will apply the above set settings to all existing servers your have
           joined.
         </ButtonItem>
       </Category>
-      <Category
-        {...{
-          title: "Server Profile",
-          open: false,
-        }}>
+      <Category title="Server Profile" open={false}>
         <FormItem
-          {...{
-            title: "Nickname",
-            note: "May not work on all servers, since a lot of them won't give you the permission to change nickname instantly",
-            notePosition: "after",
-          }}>
+          title="Nickname"
+          note="May not work on all servers, since a lot of them won't give you the permission to change nickname instantly"
+          notePosition="after">
           <TextInput
-            {...{
-              placeholder: UltimateUserStore.getCurrentUser().username,
-              ...util.useSetting(SettingValues, "nickname", defaultSettings.nickname),
-            }}
+            placeholder={UltimateUserStore.getCurrentUser().username}
+            {...util.useSetting(SettingValues, "nickname", defaultSettings.nickname)}
           />
         </FormItem>
         <ButtonItem
-          {...{
-            button: "Apply to all servers",
-            onClick: () => {
-              ModalUtils.alert({
-                title: "Are you sure you want to continue?",
-                body: `This will apply this nickname to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
-                  Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
-                )}.`,
-                confirmText: "Yes",
-                cancelText: "No",
-                onConfirm: applyNicknameToAll,
-              });
-            },
+          button="Apply to all servers"
+          onClick={() => {
+            ModalUtils.alert({
+              title: "Are you sure you want to continue?",
+              body: `This will apply this nickname to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
+                Object.keys(UltimateGuildsStore.getGuilds()).length * 10,
+              )}.`,
+              confirmText: "Yes",
+              cancelText: "No",
+              onConfirm: applyNicknameToAll,
+            });
           }}>
           Pressing this button will apply the above set nickname to all existing servers your have
           (Where you have permissions to do so obviously).
         </ButtonItem>
       </Category>
-      <Category
-        {...{
-          title: "Server Verification",
-          open: false,
-        }}>
-        <SwitchItem
-          {...{
-            ...util.useSetting(SettingValues, "terms", defaultSettings.terms),
-          }}>
+      <Category title="Server Verification" open={false}>
+        <SwitchItem {...util.useSetting(SettingValues, "terms", defaultSettings.terms)}>
           Accept server terms (Might not work as intended).
         </SwitchItem>
       </Category>
     </div>
   );
 };
+
+export default { registerSettings, applyServerSettingsToAll, applyNicknameToAll, Settings };
