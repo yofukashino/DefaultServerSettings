@@ -11,7 +11,7 @@ import Listeners from "./listeners";
 
 export const start = (): void => {
   Settings.registerSettings();
-  void Listeners.addListeners();
+  void Listeners.addListeners().catch((err) => PluginLogger.error(err));
 };
 
 export const stop = (): void => {
