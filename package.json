@@ -1,6 +1,6 @@
 {
   "name": "default-server-settings",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Apply your custom set settings to server on joining.",
   "engines": {
     "node": ">=14.0.0"
@@ -21,7 +21,7 @@
   "keywords": [],
   "author": "Nanakusa",
   "license": "MIT",
-   "devDependencies": {
+  "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/node": "^22.14.1",
     "@types/react": "^18.2.31",
