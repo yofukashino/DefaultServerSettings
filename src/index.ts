@@ -1,20 +1,18 @@
 import { Logger, settings } from "replugged";
-import { defaultSettings } from "./lib/consts";
+import { DefaultSettings } from "@Consts";
 
-export const PluginLogger = Logger.plugin("DefaultServerSettings");
-export const SettingValues = await settings.init(
-  "dev.tharki.DefaultServerSettings",
-  defaultSettings,
-);
-import Settings from "./Components/Settings";
-import Listeners from "./listeners";
+export const PluginLogger = Logger.plugin("DefaultServerSettings", "#ffffff80");
+export const SettingValues = settings.init("dev.tharki.DefaultServerSettings", DefaultSettings);
+import Settings from "@components/Settings";
+import Listeners from "@Listeners";
 
 export const start = (): void => {
   Settings.registerSettings();
-  void Listeners.addListeners().catch((err) => PluginLogger.error(err));
+  void Listeners.addListeners();
 };
 
 export const stop = (): void => {
-  Listeners.removeListeners();
+  void Listeners.removeListeners();
 };
-export { Settings } from "./Components/Settings.jsx";
+
+export { Settings } from "@components/Settings";

@@ -3,11 +3,11 @@
   "name": "DefaultServerSettings",
   "description": "Apply your custom set settings to server on joining.",
   "image": "https://i.imgur.com/pr5xu7W.png",
-  "source": "https://github.com/YofukashiNo/DefaultServerSettings",
+  "source": "https://github.com/yofukashino/DefaultServerSettings",
   "author": {
     "name": "Nanakusa",
     "discordID": "1121961711080050780",
-    "github": "YofukashiNo"
+    "github": "yofukashino"
   },
   "version": "1.0.9",
   "updater": {

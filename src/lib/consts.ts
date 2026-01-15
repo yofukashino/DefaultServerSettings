@@ -1,4 +1,4 @@
-export const defaultSettings = {
+export const DefaultSettings = {
   muted: false,
   messageNotifications: "1",
   notifyHighlights: true,

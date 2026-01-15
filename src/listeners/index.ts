@@ -1,15 +1,34 @@
-import { fluxDispatcher as FluxDispatcher } from "replugged/common";
-import Modules from "../lib/requiredModules";
-import GuildCreateListener from "./GuildCreateListener";
-import GuildJoinRequestListener from "./GuildJoinRequestListener";
+import { PluginLogger } from "@this";
+import Modules from "@lib/RequiredModules";
+
+const ListenerNames = ["GuildCreate", "GuildJoinRequest"] as const;
+
 export const addListeners = async (): Promise<void> => {
-  await Modules.loadModules();
-  FluxDispatcher.subscribe("GUILD_CREATE", GuildCreateListener);
-  FluxDispatcher.subscribe("GUILD_JOIN_REQUEST_CREATE", GuildJoinRequestListener);
+  try {
+    await Modules.loadModules();
+    console.log(Modules);
+    await Promise.all(
+      ListenerNames.map(async (name) => {
+        const mod = await import(`./${name}.ts`);
+        mod.subscribe();
+      }),
+    );
+  } catch (err: unknown) {
+    PluginLogger.error(err);
+  }
 };
-export const removeListeners = (): void => {
-  FluxDispatcher.unsubscribe("GUILD_CREATE", GuildCreateListener);
-  FluxDispatcher.unsubscribe("GUILD_JOIN_REQUEST_CREATE", GuildJoinRequestListener);
+
+export const removeListeners = async (): Promise<void> => {
+  try {
+    await Promise.all(
+      ListenerNames.map(async (name) => {
+        const mod = await import(`./${name}.ts`);
+        mod.unsubscribe();
+      }),
+    );
+  } catch (err: unknown) {
+    PluginLogger.error(err);
+  }
 };
 
 export default { addListeners, removeListeners };
