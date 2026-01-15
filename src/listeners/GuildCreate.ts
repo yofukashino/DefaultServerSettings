@@ -1,7 +1,7 @@
 import { fluxDispatcher } from "replugged/common";
 import { SettingValues } from "@this";
 import { DefaultSettings } from "@Consts";
-import { GuildSettingUtils, NicknameUtils } from "@lib/RequiredModules";
+import { GuildSettingUtils, GuildVerificationUtils, NicknameUtils } from "@lib/RequiredModules";
 
 const listener = ({
   guild,
@@ -33,6 +33,17 @@ const listener = ({
   GuildSettingUtils.updateGuildNotificationSettings(guild.id, currentSetting);
   const nickname = SettingValues.get("nickname", DefaultSettings.nickname);
   if (nickname) NicknameUtils.changeNickname(guild.id, null, "@me", nickname);
+
+  const terms = SettingValues.get("terms", DefaultSettings.terms);
+  if (terms) {
+    void GuildVerificationUtils.fetchVerificationForm(guild.id).then(async (form) => {
+      form.formFields = form.form_fields;
+      delete form.form_fields;
+      const termField = form.formFields.find((c) => c.field_type === "TERMS");
+      termField.response = true;
+      await GuildVerificationUtils.submitVerificationForm(guild.id, form);
+    });
+  }
 };
 
 export const subscribe = (): void => {

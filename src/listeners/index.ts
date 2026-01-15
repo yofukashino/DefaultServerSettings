@@ -1,12 +1,11 @@
 import { PluginLogger } from "@this";
 import Modules from "@lib/RequiredModules";
 
-const ListenerNames = ["GuildCreate", "GuildJoinRequest"] as const;
+const ListenerNames = ["GuildCreate"] as const;
 
 export const addListeners = async (): Promise<void> => {
   try {
     await Modules.loadModules();
-    console.log(Modules);
     await Promise.all(
       ListenerNames.map(async (name) => {
         const mod = await import(`./${name}.ts`);

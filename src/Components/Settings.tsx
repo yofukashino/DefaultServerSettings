@@ -1,22 +1,10 @@
 import { util } from "replugged";
-import {
-  guilds,
-  modal,
-  users,
-} from "replugged/common";
-import {
-  ButtonItem,
-  Category,
-  Select,
-  Stack,
-  Switch,
-  TextInput,
-} from "replugged/components";
+import { guilds, modal, users } from "replugged/common";
+import { ButtonItem, Category, Select, Stack, Switch, TextInput } from "replugged/components";
 import { PluginLogger, SettingValues } from "@this";
 import { DefaultSettings } from "@Consts";
 import { GuildSettingUtils, NicknameUtils } from "@lib/RequiredModules";
 import Utils from "@Utils";
-
 
 export const registerSettings = (): void => {
   type DefaultSettings = typeof DefaultSettings;
@@ -47,11 +35,8 @@ export const applyServerSettingsToAll = async (): Promise<void> => {
       DefaultSettings.muteScheduledEvents,
     ),
     flags: SettingValues.get("flags", DefaultSettings.flags) ? 0 : 16384,
-    hide_muted_channels: SettingValues.get(
-      "hideMutedChannels",
-      DefaultSettings.hideMutedChannels,
-    ),
-  }
+    hide_muted_channels: SettingValues.get("hideMutedChannels", DefaultSettings.hideMutedChannels),
+  };
   const guildIds = guilds.getGuilds();
   for (const guildID in guildIds) {
     GuildSettingUtils.updateGuildNotificationSettings(guildID, currentSettings);
@@ -67,14 +52,9 @@ export const applyServerSettingsToAll = async (): Promise<void> => {
 
 export const applyNicknameToAll = async (): Promise<void> => {
   const guildIds = guilds.getGuilds();
-  const nickname = SettingValues.get("nickname", DefaultSettings.nickname)
+  const nickname = SettingValues.get("nickname", DefaultSettings.nickname);
   for (const guildID in guildIds) {
-    NicknameUtils.changeNickname(
-      guildID,
-      null,
-      "@me",
-      nickname,
-    );
+    NicknameUtils.changeNickname(guildID, null, "@me", nickname);
     await util.sleep(1000);
   }
   PluginLogger.log("Default Nickname Applied to all guilds");
@@ -90,7 +70,10 @@ export const Settings = (): React.ReactElement => {
     <Stack gap={24}>
       <Category label="Server Settings" open={false}>
         <Stack gap={24}>
-          <Switch label="Mute Server" {...util.useSetting(SettingValues, "muted", DefaultSettings.muted)} />
+          <Switch
+            label="Mute Server"
+            {...util.useSetting(SettingValues, "muted", DefaultSettings.muted)}
+          />
 
           <Select
             label="Message Notifications"
@@ -112,19 +95,28 @@ export const Settings = (): React.ReactElement => {
               SettingValues,
               "messageNotifications",
               DefaultSettings.messageNotifications,
-            )} />
+            )}
+          />
           <Switch
             label="Highlight Notifications"
-            {...util.useSetting(SettingValues, "notifyHighlights", DefaultSettings.notifyHighlights)} />
+            {...util.useSetting(
+              SettingValues,
+              "notifyHighlights",
+              DefaultSettings.notifyHighlights,
+            )}
+          />
           <Switch
             label="Suppress @everyone and @here"
-            {...util.useSetting(SettingValues, "supressEveryone", DefaultSettings.supressEveryone)} />
+            {...util.useSetting(SettingValues, "supressEveryone", DefaultSettings.supressEveryone)}
+          />
           <Switch
             label="Suppress @role mentions"
-            {...util.useSetting(SettingValues, "supressRoles", DefaultSettings.supressRoles)} />
+            {...util.useSetting(SettingValues, "supressRoles", DefaultSettings.supressRoles)}
+          />
           <Switch
-            label="Mobile Push Notifications" {...util.useSetting(SettingValues, "mobilePush", DefaultSettings.mobilePush)} />
-
+            label="Mobile Push Notifications"
+            {...util.useSetting(SettingValues, "mobilePush", DefaultSettings.mobilePush)}
+          />
 
           <Switch
             label="Mute New Events"
@@ -132,8 +124,12 @@ export const Settings = (): React.ReactElement => {
               SettingValues,
               "muteScheduledEvents",
               DefaultSettings.muteScheduledEvents,
-            )} />
-          <Switch label="Show All Channels" {...util.useSetting(SettingValues, "flags", DefaultSettings.flags)} />
+            )}
+          />
+          <Switch
+            label="Show All Channels"
+            {...util.useSetting(SettingValues, "flags", DefaultSettings.flags)}
+          />
 
           <Switch
             label="Hide Muted Channels"
@@ -141,7 +137,8 @@ export const Settings = (): React.ReactElement => {
               SettingValues,
               "hideMutedChannels",
               DefaultSettings.hideMutedChannels,
-            )} />
+            )}
+          />
           <ButtonItem
             button="Apply to all servers"
             description="Pressing this button will apply the above set settings to all existing servers your have  joined."
@@ -155,7 +152,8 @@ export const Settings = (): React.ReactElement => {
                 cancelText: "No",
                 onConfirm: applyServerSettingsToAll,
               });
-            }} />
+            }}
+          />
         </Stack>
       </Category>
       <Category label="Server Profile" open={false}>
@@ -179,12 +177,16 @@ export const Settings = (): React.ReactElement => {
                 cancelText: "No",
                 onConfirm: applyNicknameToAll,
               });
-            }} />
+            }}
+          />
         </Stack>
       </Category>
       <Category label="Server Verification" open={false}>
         <Stack gap={24}>
-          <Switch label="Accept server terms (Might not work as intended)." {...util.useSetting(SettingValues, "terms", DefaultSettings.terms)} />
+          <Switch
+            label="Accept server terms (Would not skip onboarding but only accepts rules automatically)."
+            {...util.useSetting(SettingValues, "terms", DefaultSettings.terms)}
+          />
         </Stack>
       </Category>
     </Stack>

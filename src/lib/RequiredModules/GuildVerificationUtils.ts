@@ -1,16 +1,19 @@
 import { webpack } from "replugged";
 
+export type FormFields = [
+  {
+    field_type: string;
+    label: string;
+    required: boolean;
+    response?: boolean;
+    values?: string[];
+  },
+];
+
 export interface Form {
   description: string;
-  form_fields: [
-    {
-      field_type: string;
-      label: string;
-      required: boolean;
-      response?: boolean;
-      values?: string[];
-    },
-  ];
+  form_fields?: FormFields;
+  formFields?: FormFields;
 
   version: string;
 }
