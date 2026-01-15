@@ -16,7 +16,9 @@ export interface GuildSettingUtils {
     guildId: string,
     currentSettings: Record<string, unknown>,
   ) => unknown;
-  updateGuildNotificationSettingsBulk: () => unknown;
+  updateGuildNotificationSettingsBulk: (
+    settings: Record<string, Record<string, unknown>>,
+  ) => unknown;
 }
 
 export default await webpack

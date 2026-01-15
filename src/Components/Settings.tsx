@@ -19,29 +19,44 @@ export const registerSettings = (): void => {
 };
 
 export const applyServerSettingsToAll = async (): Promise<void> => {
+  const muted = SettingValues.get("muted", DefaultSettings.muted);
+  const messageNotifications = Number(
+    SettingValues.get("messageNotifications", DefaultSettings.messageNotifications),
+  );
+  const notifyHighlights = SettingValues.get("notifyHighlights", DefaultSettings.notifyHighlights);
+  const supressEveryone = SettingValues.get("supressEveryone", DefaultSettings.supressEveryone);
+  const supressRoles = SettingValues.get("supressRoles", DefaultSettings.supressRoles);
+  const mobilePush = SettingValues.get("mobilePush", DefaultSettings.mobilePush);
+  const muteScheduledEvents = SettingValues.get(
+    "muteScheduledEvents",
+    DefaultSettings.muteScheduledEvents,
+  );
+  const hideMutedChannels = SettingValues.get(
+    "hideMutedChannels",
+    DefaultSettings.hideMutedChannels,
+  );
+  const showAllChannels = SettingValues.get("flags", DefaultSettings.flags);
+
   const currentSettings = {
-    muted: SettingValues.get("muted", DefaultSettings.muted),
-    message_notifications: Number(
-      SettingValues.get("messageNotifications", DefaultSettings.messageNotifications),
-    ),
-    notify_highlights: SettingValues.get("notifyHighlights", DefaultSettings.notifyHighlights)
-      ? 2
-      : 1,
-    suppress_everyone: SettingValues.get("supressEveryone", DefaultSettings.supressEveryone),
-    suppress_roles: SettingValues.get("supressRoles", DefaultSettings.supressRoles),
-    mobile_push: SettingValues.get("mobilePush", DefaultSettings.mobilePush),
-    mute_scheduled_events: SettingValues.get(
-      "muteScheduledEvents",
-      DefaultSettings.muteScheduledEvents,
-    ),
-    flags: SettingValues.get("flags", DefaultSettings.flags) ? 0 : 16384,
-    hide_muted_channels: SettingValues.get("hideMutedChannels", DefaultSettings.hideMutedChannels),
+    muted,
+    message_notifications: messageNotifications,
+    notify_highlights: notifyHighlights ? 2 : 1,
+    suppress_everyone: supressEveryone,
+    suppress_roles: supressRoles,
+    mobile_push: mobilePush,
+    mute_scheduled_events: muteScheduledEvents,
+    hide_muted_channels: hideMutedChannels,
+    flags: (messageNotifications === 0 ? 2048 : 4096) + (showAllChannels ? 0 : 16384),
   };
-  const guildIds = guilds.getGuilds();
-  for (const guildID in guildIds) {
-    GuildSettingUtils.updateGuildNotificationSettings(guildID, currentSettings);
-    await util.sleep(1000);
-  }
+  const guildIds = guilds.getGuildIds();
+  await GuildSettingUtils.updateGuildNotificationSettingsBulk(
+    guildIds.reduce((acc, id) => {
+      acc[id] = currentSettings;
+      return acc;
+    }, {}),
+  );
+  await util.sleep(1500);
+
   PluginLogger.log("Default Settings Applied to all guilds");
   modal.alert({
     title: "DefaultServerSettings",
@@ -51,9 +66,9 @@ export const applyServerSettingsToAll = async (): Promise<void> => {
 };
 
 export const applyNicknameToAll = async (): Promise<void> => {
-  const guildIds = guilds.getGuilds();
+  const guildIds = guilds.getGuildIds();
   const nickname = SettingValues.get("nickname", DefaultSettings.nickname);
-  for (const guildID in guildIds) {
+  for (const guildID of guildIds) {
     NicknameUtils.changeNickname(guildID, null, "@me", nickname);
     await util.sleep(1000);
   }
@@ -145,8 +160,8 @@ export const Settings = (): React.ReactElement => {
             onClick={() => {
               modal.alert({
                 title: "Are you sure you want to continue?",
-                body: `This will apply these settings to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
-                  Object.keys(guilds.getGuilds()).length * 10,
+                body: `This will apply these settings to all servers you are in and might take upto an approx of ${Utils.toDaysMinutesSeconds(
+                  Object.keys(guilds.getGuildIds()).length * 5,
                 )}.`,
                 confirmText: "Yes",
                 cancelText: "No",
@@ -170,8 +185,8 @@ export const Settings = (): React.ReactElement => {
             onClick={() => {
               modal.alert({
                 title: "Are you sure you want to continue?",
-                body: `This will apply this nickname to all servers you are in and might take an approx of ${Utils.toDaysMinutesSeconds(
-                  Object.keys(guilds.getGuilds()).length * 10,
+                body: `This will apply this nickname to all servers you are in and might take upto an approx of ${Utils.toDaysMinutesSeconds(
+                  Object.keys(guilds.getGuildIds()).length * 10,
                 )}.`,
                 confirmText: "Yes",
                 cancelText: "No",

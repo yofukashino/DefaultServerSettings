@@ -11,24 +11,34 @@ const listener = ({
   };
   type: string;
 }): void => {
-  console.log(guild);
+  const muted = SettingValues.get("muted", DefaultSettings.muted);
+  const messageNotifications = Number(
+    SettingValues.get("messageNotifications", DefaultSettings.messageNotifications),
+  );
+  const notifyHighlights = SettingValues.get("notifyHighlights", DefaultSettings.notifyHighlights);
+  const supressEveryone = SettingValues.get("supressEveryone", DefaultSettings.supressEveryone);
+  const supressRoles = SettingValues.get("supressRoles", DefaultSettings.supressRoles);
+  const mobilePush = SettingValues.get("mobilePush", DefaultSettings.mobilePush);
+  const muteScheduledEvents = SettingValues.get(
+    "muteScheduledEvents",
+    DefaultSettings.muteScheduledEvents,
+  );
+  const hideMutedChannels = SettingValues.get(
+    "hideMutedChannels",
+    DefaultSettings.hideMutedChannels,
+  );
+  const showAllChannels = SettingValues.get("flags", DefaultSettings.flags);
+
   const currentSetting = {
-    muted: SettingValues.get("muted", DefaultSettings.muted),
-    message_notifications: Number(
-      SettingValues.get("messageNotifications", DefaultSettings.messageNotifications),
-    ),
-    notify_highlights: SettingValues.get("notifyHighlights", DefaultSettings.notifyHighlights)
-      ? 2
-      : 1,
-    suppress_everyone: SettingValues.get("supressEveryone", DefaultSettings.supressEveryone),
-    suppress_roles: SettingValues.get("supressRoles", DefaultSettings.supressRoles),
-    mobile_push: SettingValues.get("mobilePush", DefaultSettings.mobilePush),
-    mute_scheduled_events: SettingValues.get(
-      "muteScheduledEvents",
-      DefaultSettings.muteScheduledEvents,
-    ),
-    flags: SettingValues.get("flags", DefaultSettings.flags) ? 0 : 16384,
-    hide_muted_channels: SettingValues.get("hideMutedChannels", DefaultSettings.hideMutedChannels),
+    muted,
+    message_notifications: messageNotifications,
+    notify_highlights: notifyHighlights ? 2 : 1,
+    suppress_everyone: supressEveryone,
+    suppress_roles: supressRoles,
+    mobile_push: mobilePush,
+    mute_scheduled_events: muteScheduledEvents,
+    hide_muted_channels: hideMutedChannels,
+    flags: (messageNotifications === 0 ? 2048 : 4096) + (showAllChannels ? 0 : 16384),
   };
   GuildSettingUtils.updateGuildNotificationSettings(guild.id, currentSetting);
   const nickname = SettingValues.get("nickname", DefaultSettings.nickname);
